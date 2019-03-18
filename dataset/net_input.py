@@ -13,11 +13,11 @@ class HyperspectralDataset(Dataset):
         self.imgpath_list=[]
         
         if mode == "train":
-            f = open("/home/siminzhu/mm/dataset/train.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/train.txt", "r")
         elif mode == "valid":
-            f = open("/home/siminzhu/mm/dataset/valid.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/valid.txt", "r")
         else:
-            f = open("/home/siminzhu/mm/dataset/test.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/test.txt", "r")
         contents=f.readlines()                                                #读取文档中的所有行
                 
         for line in contents:
@@ -25,7 +25,7 @@ class HyperspectralDataset(Dataset):
             rs=ls.rstrip(ls.split('/')[-1])                            #rstrip() 删除 string 字符串末尾的指定字符（默认为空格）
             xs=ls.lstrip(rs).split('_')[-1].rstrip('.bmp\n')
         
-            newpath=rs.replace(rs,"/home/siminzhu/mm/dataset/ECUST2019_NPY_new/"+rs+xs+'.npy')
+            newpath=rs.replace(rs,"/home/xianyi/ECUST2019_NPY_new/"+rs+xs+'.npy')
             
             self.imgpath_list.append(newpath)
             
