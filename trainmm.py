@@ -41,32 +41,27 @@ def train(epochs):
         net.train()
         for i,(inputs,train_labels) in enumerate(trainloader):
                                    
-            # if use_gpu:
-            #     inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
-            # else:
-            #     inputs,labels=Variable(inputs),Variable(train_labels)
+            if use_gpu:
+                inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
+            else:
+                inputs,labels=Variable(inputs),Variable(train_labels)
             
             inputs,labels=Variable(inputs.float()),Variable(train_labels)
-            #print(inputs.shape,labels.shape)
+            
             optimizer.zero_grad()
             outputs=net(inputs)                                                   #网络输出
-            #print(outputs.shape)
+            
             _,train_predicted=torch.max(outputs.data,1)
-            # print(train_predicted)
-            # print('train_predicted',train_predicted)
-            # print('labels.data',labels.data)
+            
             train_correct += int(torch.sum(train_predicted.eq(labels.data)))
-            # print('train_correct',train_correct)
-            # train_correct=train_correct.numpy()
-            # print('train_correct',train_correct)
-            # print(outputs.shape,labels.shape)
+            
             loss =criterion(outputs,labels)
-            # print('loss',loss)
+           
             loss.backward()
             optimizer.step()
             running_loss+=loss.item()
             train_total+=int(train_labels.size(0))
-            # print('train_total',train_total)
+           
         loss_train=running_loss/train_total
         acc_train=100*train_correct/train_total
          
@@ -106,7 +101,7 @@ def train(epochs):
         writer.add_scalars('loss',  {'train': loss_train, 'valid': loss_valid}, epoch)     
 
         #保存网络模型
-        name = 'mobilefacenet_'+str(epoch+1)+'.pkl'
+        name = '/home/siminzhu/mmface_recognition/savepoints/mobilefacenet_'+str(epoch+1)+'.pkl'
         torch.save(net,name)   
         
 
