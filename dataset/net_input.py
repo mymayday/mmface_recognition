@@ -41,7 +41,7 @@ class HyperspectralDataset(Dataset):
         ]
         )                                                 
         data=data_transform(data)                                   #对加载的图像做归一化处理
-        label=int(self.imgpath_list[index].split('/',-1)[7])-1
+        label=self.imgpath_list[index].split('/',-1)[7]-1
         #print(data.size())
         #print(data,label)
         return data,label
