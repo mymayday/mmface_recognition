@@ -41,6 +41,7 @@ class HyperspectralDataset(Dataset):
         ]
         )                                                 
         data=data_transform(data)                                   #对加载的图像做归一化处理
+        data=data.contiguous()
         label=int(self.imgpath_list[index].split('/',-1)[5])-1
         #print(data.size())
         #print(data,label)
