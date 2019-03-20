@@ -46,7 +46,7 @@ def train(epochs):
         net.train()
         for i,(inputs,train_labels) in enumerate(trainloader):
                                    
-            if use_gpu:
+            if use_gpu():
                 inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
             else:
                 inputs,labels=Variable(inputs),Variable(train_labels)
