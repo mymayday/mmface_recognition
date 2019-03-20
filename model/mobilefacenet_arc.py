@@ -48,6 +48,7 @@ class ConvBlock(nn.Module):
             self.prelu = nn.PReLU(oup)
     def forward(self, x):
         x = self.conv(x)
+        x=x.contiguous()
         x = self.bn(x)
         if self.linear:
             return x
