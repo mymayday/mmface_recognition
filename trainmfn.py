@@ -16,17 +16,17 @@ from torchvision import transforms
 from tensorboardX import SummaryWriter
 
 # gpu init
-gpu_list = ''
-multi_gpus = False
-if isinstance(GPU, int):
-    gpu_list = str(GPU)
-else:
-    multi_gpus = True
-    for i, gpu_id in enumerate(GPU):
-        gpu_list += str(gpu_id)
-        if i != len(GPU) - 1:
-            gpu_list += ','
-os.environ['CUDA_VISIBLE_DEVICES'] = gpu_list
+# gpu_list = ''
+# multi_gpus = False
+# if isinstance(GPU, int):
+#     gpu_list = str(GPU)
+# else:
+#     multi_gpus = True
+#     for i, gpu_id in enumerate(GPU):
+#         gpu_list += str(gpu_id)
+#         if i != len(GPU) - 1:
+#             gpu_list += ','
+# os.environ['CUDA_VISIBLE_DEVICES'] = gpu_list
 
 net=MobileFaceNet()
 ArcMargin = ArcMarginProduct(128, 33)
@@ -38,9 +38,9 @@ if use_gpu():
    ArcMargin = ArcMargin.cuda()
    #print('gpu is available')
 
-if multi_gpus:
-    net = DataParallel(net)
-    ArcMargin = DataParallel(ArcMargin)
+# if multi_gpus:
+#     net = DataParallel(net)
+#     ArcMargin = DataParallel(ArcMargin)
 
 #初始化参数
 batchsize=64                       #批处理大小
