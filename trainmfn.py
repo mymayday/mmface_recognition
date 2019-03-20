@@ -28,7 +28,7 @@ from tensorboardX import SummaryWriter
 #             gpu_list += ','
 # os.environ['CUDA_VISIBLE_DEVICES'] = gpu_list
 
-net=MobileFaceNet()
+net=MobileFacenet()
 ArcMargin = ArcMarginProduct(128, 33)
 writer=SummaryWriter()
 use_gpu=torch.cuda.is_available
