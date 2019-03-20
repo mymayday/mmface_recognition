@@ -17,6 +17,9 @@ net=MobileFaceNet()
 #net=MobileNet()
 writer=SummaryWriter()
 
+if torch.cuda.is_available():
+   net.cuda()
+
 #初始化参数
 batchsize=64                       #批处理大小
 lr=1e-4
@@ -46,7 +49,7 @@ def train(epochs):
             else:
                 inputs,labels=Variable(inputs),Variable(train_labels)
             
-            inputs,labels=Variable(inputs.float()),Variable(train_labels)
+            #inputs,labels=Variable(inputs.float()),Variable(train_labels)
             
             optimizer.zero_grad()
             outputs=net(inputs)                                                   #网络输出
