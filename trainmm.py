@@ -16,8 +16,9 @@ from tensorboardX import SummaryWriter
 net=MobileFaceNet()
 #net=MobileNet()
 writer=SummaryWriter()
+use_gpu=torch.cuda.is_available
 
-if torch.cuda.is_available():
+if use_gpu():
    net.cuda()
 
 #初始化参数
