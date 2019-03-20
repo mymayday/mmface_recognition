@@ -30,24 +30,24 @@ def train(epochs):
     #载入训练集数据
     train_dataset=HyperspectralDataset('train')
     trainloader=DataLoader(dataset=train_dataset,batch_size=batchsize,shuffle=True,num_workers=4)     #num_worker多线程数目
-    #print("loadalready")
+    
     #目标函数与优化器
     criterion=nn.CrossEntropyLoss()
     #ptimizer=optim.SGD(net.parameters(),lr=lr)
     optimizer=optim.Adam(net.parameters(),lr=lr)
     #optimizer=optim.Adam(net.parameters(),lr=lr,weight_decay=1e-4)
-    #开始训练    
     
+    #开始训练    
     for epoch in range(epochs):
         running_loss=0.0
         train_correct=0
         train_total=0
-        
         net.train()
         for i,(inputs,train_labels) in enumerate(trainloader):
                                    
             if use_gpu():
                 inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
+                print('use gpu')
             else:
                 inputs,labels=Variable(inputs),Variable(train_labels)
             
