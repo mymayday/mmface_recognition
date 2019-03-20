@@ -43,14 +43,12 @@ def train(epochs):
         train_correct=0
         train_total=0
         net.train()
-        for i,(inputs,train_labels) in enumerate(trainloader):
-                                   
+        for i,(inputs,train_labels) in enumerate(trainloader):                     
             if use_gpu():
                 inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
                 print('use gpu')
             else:
-                inputs,labels=Variable(inputs),Variable(train_labels)
-            
+                inputs,labels=Variable(inputs),Variable(train_labels) 
             #inputs,labels=Variable(inputs.float()),Variable(train_labels)
             
             optimizer.zero_grad()
@@ -83,7 +81,14 @@ def train(epochs):
         valid_total=0
         
         for j,(validinputs,valid_labels) in enumerate(validloader):
-            inputs,labels=Variable(validinputs.float()),Variable(valid_labels)
+            if use_gpu():
+                inputs,labels=Variable(validinputs.cuda()),Variable(valid_labels.cuda())
+                print('use gpu')
+            else:
+                inputs,labels=Variable(validinputs),Variable(valid_labels) 
+         
+         
+            #inputs,labels=Variable(validinputs.float()),Variable(valid_labels)
             
             outputs=net(inputs)                                                   #网络输出
             
