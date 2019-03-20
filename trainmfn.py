@@ -68,7 +68,7 @@ def train(epochs):
         for i,(inputs,train_labels) in enumerate(trainloader):                     
             if use_gpu():
                 inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
-                inputs=inputs.float()
+                inputs=inputs.contiguous()
             else:
                 inputs,labels=Variable(inputs),Variable(train_labels) 
             print(inputs.shape)
@@ -108,10 +108,9 @@ def train(epochs):
         for j,(validinputs,valid_labels) in enumerate(validloader):
             if use_gpu():
                 inputs,labels=Variable(validinputs.cuda()),Variable(valid_labels.cuda())
-                inputs=inputs.float()
             else:
                 inputs,labels=Variable(validinputs),Variable(valid_labels) 
-     
+            inputs=inputs.contiguous()
             #inputs,labels=Variable(validinputs.float()),Variable(valid_labels)
             
             outputs=net(inputs)                                                   #网络输出
