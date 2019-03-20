@@ -117,6 +117,7 @@ class MobileFacenet(nn.Module):
         x = self.dw_conv1(x)
         x = self.blocks(x)
         x = self.conv2(x)
+        x=x.contiguous()
         x = self.linear7(x)
         x = self.linear1(x)
         x = x.contiguous().view(x.size(0), -1)
