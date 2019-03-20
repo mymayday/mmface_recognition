@@ -46,7 +46,6 @@ def train(epochs):
         for i,(inputs,train_labels) in enumerate(trainloader):                     
             if use_gpu():
                 inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
-                print('use gpu')
             else:
                 inputs,labels=Variable(inputs),Variable(train_labels) 
             #inputs,labels=Variable(inputs.float()),Variable(train_labels)
