@@ -18,6 +18,11 @@ net=MobileFaceNet()
 writer=SummaryWriter()
 use_gpu=torch.cuda.is_available
 
+if torch.cuda.device_count() > 1: 
+   print("Let's use", torch.cuda.device_count(), "GPUs!") 
+   # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs 
+   net = nn.DataParallel(net)   
+
 if use_gpu():
    net.cuda()
    #print('gpu is available')
@@ -109,8 +114,9 @@ def train(epochs):
         writer.add_scalars('loss',  {'train': loss_train, 'valid': loss_valid}, epoch)     
 
         #保存网络模型
-        name = '/home/siminzhu/mmface_recognition/savepoints/mobilefacenet_'+str(epoch+1)+'.pkl'
-        torch.save(net,name)   
+#         name = '/home/siminzhu/mmface_recognition/savepoints/mobilefacenet_'+str(epoch+1)+'.pkl'
+#         torch.save(net,name)   
         
 
 train(100)
+torch.save(net.state_dict(),'mobilefacenet1).pkl')
