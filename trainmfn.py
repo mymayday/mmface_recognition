@@ -6,7 +6,7 @@ from torch.nn import DataParallel
 from torch.utils.data import DataLoader,Dataset
 from torchvision import transforms as t
 from dataset import net_input
-from model.mobilefacenet_arc import MobileFaceNet
+from model.mobilefacenet_arc import MobileFacenet
 from model.mobilefacenet_arc import ArcMarginProduct
 from model.mobilenet import MobileNet
 from torch.autograd import Variable
