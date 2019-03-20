@@ -14,6 +14,7 @@ import torch.optim as optim
 from dataset.net_input import HyperspectralDataset
 from torchvision import transforms
 from tensorboardX import SummaryWriter
+import time
 
 # gpu init
 # gpu_list = ''
@@ -62,6 +63,7 @@ def train(epochs):
         running_loss=0.0
         train_correct=0
         train_total=0
+        since = time.time()
         net.train()
         for i,(inputs,train_labels) in enumerate(trainloader):                     
             if use_gpu():
@@ -106,8 +108,7 @@ def train(epochs):
                 inputs,labels=Variable(validinputs.cuda()),Variable(valid_labels.cuda())
             else:
                 inputs,labels=Variable(validinputs),Variable(valid_labels) 
-         
-         
+     
             #inputs,labels=Variable(validinputs.float()),Variable(valid_labels)
             
             outputs=net(inputs)                                                   #网络输出
@@ -123,7 +124,8 @@ def train(epochs):
 
         loss_valid=valid_loss/valid_total
         acc_valid=100*valid_correct/valid_total
-                          
+        
+        time_elapsed = time.time() - since
         print(' %d epoch  train  loss: %.3f  train_acc: %.3f        valid  loss:%.3f  valid_acc:%.3f' %(epoch+1,loss_train,acc_train,loss_valid,acc_valid))    
 
         #画图
