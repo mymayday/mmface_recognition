@@ -7,7 +7,7 @@ from torchvision import transforms as t
 from dataset import net_input
 from model.mobilefacenet import MobileFaceNet
 from model.mobilenet import MobileNet
-from model.mobilenet import MobileNetV2
+from model.mobilenetV2 import MobileNetV2
 from torch.autograd import Variable
 import torch.optim as optim
 from dataset.net_input import HyperspectralDataset
