@@ -47,9 +47,11 @@ class ConvBlock(nn.Module):
         if not linear:
             self.prelu = nn.PReLU(oup)
     def forward(self, x):
+        x=x.contiguous()
         x = self.conv(x)
         x=x.contiguous()
         x = self.bn(x)
+        x=x.contiguous()
         if self.linear:
             return x
         else:
@@ -114,6 +116,7 @@ class MobileFacenet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
+        x=x.contiguous()
         x = self.conv1(x)
         x = self.dw_conv1(x)
         x = self.blocks(x)
