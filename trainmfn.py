@@ -73,7 +73,7 @@ def train(epochs):
                 inputs,labels=Variable(inputs),Variable(train_labels) 
             print(inputs.shape)
             #inputs,labels=Variable(inputs.float()),Variable(train_labels)
-            
+            print(inputs.is_contiguous())
             optimizer.zero_grad()
             raw_logits = net(inputs)
             outputs = ArcMargin(raw_logits, labels)
