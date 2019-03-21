@@ -110,7 +110,7 @@ def train(epochs):
         acc_valid=100*valid_correct/valid_total
         
         time_elapsed = time.time() - since
-        print(' %d epoch  train  loss: %.3f  train_acc: %.3f         valid  loss:%.3f  valid_acc:%.3f     time:%.3f' %(epoch+1,loss_train,acc_train,loss_valid,acc_valid,time_elapsed % 60))    
+        print(' %d epoch  train  loss: %.3f  train_acc: %.3f         valid  loss:%.3f  valid_acc:%.3f     time:{:.0f}m {:.0f}s' %(epoch+1,loss_train,acc_train,loss_valid,acc_valid,time_elapsed // 60,time_elapsed % 60))    
 
         #画图
         writer.add_scalars('mobilefaceaccuracy', {'train': acc_train,  'valid': acc_valid},  epoch)
