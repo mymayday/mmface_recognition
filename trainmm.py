@@ -12,6 +12,7 @@ import torch.optim as optim
 from dataset.net_input import HyperspectralDataset
 from torchvision import transforms
 from tensorboardX import SummaryWriter
+import time
 
 net=MobileFaceNet()
 #net=MobileNet()
@@ -48,6 +49,7 @@ def train(epochs):
         train_correct=0
         train_total=0
         net.train()
+        since = time.time()
         for i,(inputs,train_labels) in enumerate(trainloader):                     
             if use_gpu():
                 inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
@@ -106,8 +108,9 @@ def train(epochs):
 
         loss_valid=valid_loss/valid_total
         acc_valid=100*valid_correct/valid_total
-                          
-        print(' %d epoch  train  loss: %.3f  train_acc: %.3f        valid  loss:%.3f  valid_acc:%.3f' %(epoch+1,loss_train,acc_train,loss_valid,acc_valid))    
+        
+        time_elapsed = time.time() - since
+        print(' %d epoch  train  loss: %.3f  train_acc: %.3f         valid  loss:%.3f  valid_acc:%.3f     time:%.3f' %(epoch+1,loss_train,acc_train,loss_valid,acc_valid,time_elapsed % 60))    
 
         #画图
         writer.add_scalars('mobilefaceaccuracy', {'train': acc_train,  'valid': acc_valid},  epoch)
