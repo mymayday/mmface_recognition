@@ -73,9 +73,10 @@ def train(epochs):
                 inputs,labels=Variable(inputs),Variable(train_labels) 
             print(inputs.shape)
             #inputs,labels=Variable(inputs.float()),Variable(train_labels)
-            print(inputs.is_contiguous())
+            #print(inputs.is_contiguous())
             optimizer.zero_grad()
             raw_logits = net(inputs)
+            raw_logits.contiguous()
             outputs = ArcMargin(raw_logits, labels)
             #outputs=net(inputs)                                                   #网络输出
             
@@ -113,7 +114,9 @@ def train(epochs):
             inputs=inputs.contiguous()
             #inputs,labels=Variable(validinputs.float()),Variable(valid_labels)
             
-            outputs=net(inputs)                                                   #网络输出
+            raw_logits = net(inputs)
+            raw_logits.contiguous()
+            outputs = ArcMargin(raw_logits, labels)
             
             _,valid_predicted=torch.max(outputs.data,1)
            
