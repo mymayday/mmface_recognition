@@ -17,7 +17,7 @@ from tensorboardX import SummaryWriter
 import time
 
 net=MobileFacenet()
-writer=SummaryWriter()
+writer=SummaryWriter('log')
 use_gpu=torch.cuda.is_available
 
 if use_gpu():
