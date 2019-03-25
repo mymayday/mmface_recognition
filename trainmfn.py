@@ -16,21 +16,7 @@ from torchvision import transforms
 from tensorboardX import SummaryWriter
 import time
 
-# gpu init
-# gpu_list = ''
-# multi_gpus = False
-# if isinstance(GPU, int):
-#     gpu_list = str(GPU)
-# else:
-#     multi_gpus = True
-#     for i, gpu_id in enumerate(GPU):
-#         gpu_list += str(gpu_id)
-#         if i != len(GPU) - 1:
-#             gpu_list += ','
-# os.environ['CUDA_VISIBLE_DEVICES'] = gpu_list
-
 net=MobileFacenet()
-ArcMargin = ArcMarginProduct(128, 33)
 writer=SummaryWriter()
 use_gpu=torch.cuda.is_available
 
@@ -38,10 +24,6 @@ if use_gpu():
    net.cuda()
    ArcMargin = ArcMargin.cuda()
    #print('gpu is available')
-
-# if multi_gpus:
-#     net = DataParallel(net)
-#     ArcMargin = DataParallel(ArcMargin)
 
 #初始化参数
 batchsize=64                       #批处理大小
@@ -54,10 +36,8 @@ def train(epochs):
     
     #目标函数与优化器
     criterion=nn.CrossEntropyLoss()
-    #ptimizer=optim.SGD(net.parameters(),lr=lr)
     optimizer=optim.Adam(net.parameters(),lr=lr)
-    #optimizer=optim.Adam(net.parameters(),lr=lr,weight_decay=1e-4)
-    
+        
     #开始训练    
     for epoch in range(epochs):
         running_loss=0.0
@@ -71,14 +51,8 @@ def train(epochs):
                 inputs=inputs.contiguous()
             else:
                 inputs,labels=Variable(inputs),Variable(train_labels) 
-            print(inputs.shape)
-            #inputs,labels=Variable(inputs.float()),Variable(train_labels)
-            #print(inputs.is_contiguous())
             optimizer.zero_grad()
-            raw_logits = net(inputs)
-            raw_logits=raw_logits.contiguous()
-            outputs = ArcMargin(raw_logits, labels)
-            #outputs=net(inputs)                                                   #网络输出
+            outputs=net(inputs)                                                   #网络输出
             
             _,train_predicted=torch.max(outputs.data,1)
             
@@ -91,12 +65,12 @@ def train(epochs):
             running_loss+=loss.item()
             train_total+=int(train_labels.size(0))
            
-        loss_train=running_loss/train_total
+        loss_train=100*running_loss/train_total
         acc_train=100*train_correct/train_total
          
         #载入校验集数据
         valid_dataset=HyperspectralDataset('valid')
-        validloader=DataLoader(dataset=valid_dataset,batch_size=batchsize,shuffle=True,num_workers=4)     #num_worker多线程数目
+        validloader=DataLoader(dataset=valid_dataset,batch_size=batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
         #目标函数与优化器
         criterion=nn.CrossEntropyLoss()
         
@@ -111,13 +85,9 @@ def train(epochs):
                 inputs,labels=Variable(validinputs.cuda()),Variable(valid_labels.cuda())
             else:
                 inputs,labels=Variable(validinputs),Variable(valid_labels) 
-            inputs=inputs.contiguous()
             #inputs,labels=Variable(validinputs.float()),Variable(valid_labels)
-            
-            raw_logits = net(inputs)
-            raw_logits=raw_logits.contiguous()
-            outputs = ArcMargin(raw_logits, labels)
-            
+            outputs=net(inputs)  
+                       
             _,valid_predicted=torch.max(outputs.data,1)
            
             valid_correct += int(torch.sum(valid_predicted.eq(labels.data)))
@@ -127,11 +97,11 @@ def train(epochs):
             valid_loss+=loss.item()
             valid_total+=int(valid_labels.size(0))
 
-        loss_valid=valid_loss/valid_total
+        loss_valid=100*valid_loss/valid_total
         acc_valid=100*valid_correct/valid_total
         
         time_elapsed = time.time() - since
-        print(' %d epoch  train  loss: %.3f  train_acc: %.3f        valid  loss:%.3f  valid_acc:%.3f' %(epoch+1,loss_train,acc_train,loss_valid,acc_valid))    
+        print(' %d epoch  train  loss: %.3f  train_acc: %.3f    valid  loss:%.3f  valid_acc:%.3f   time:%.0fm %.0fs' %(epoch+1,loss_train,acc_train,loss_valid,acc_valid,time_elapsed // 60,time_elapsed % 60))    
 
         #画图
         writer.add_scalars('mobilefaceaccuracy', {'train': acc_train,  'valid': acc_valid},  epoch)
@@ -143,4 +113,4 @@ def train(epochs):
         
 
 train(100)
-torch.save(net.state_dict(),'mobilefacenet1).pkl')
+torch.save(net.state_dict(),'3-25Mobilefacenet1.pkl')
