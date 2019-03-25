@@ -19,9 +19,11 @@ import time
 net=MobileFacenet()
 writer=SummaryWriter('log')
 use_gpu=torch.cuda.is_available
+ArcMargin = ArcMarginProduct(128,33)
 
 if use_gpu():
    net.cuda()
+   ArcMargin = ArcMargin.cuda()
    #print('gpu is available')
 
 #初始化参数
@@ -51,8 +53,9 @@ def train(epochs):
             else:
                 inputs,labels=Variable(inputs),Variable(train_labels) 
             optimizer.zero_grad()
-            outputs=net(inputs)                                                   #网络输出
-            
+            #outputs=net(inputs)                                                   #网络输出
+            raw_logits = net(inputs)
+            outputs = ArcMargin(raw_logits, labels)
             _,train_predicted=torch.max(outputs.data,1)
             
             train_correct += int(torch.sum(train_predicted.eq(labels.data)))
@@ -85,7 +88,9 @@ def train(epochs):
             else:
                 inputs,labels=Variable(validinputs),Variable(valid_labels) 
             #inputs,labels=Variable(validinputs.float()),Variable(valid_labels)
-            outputs=net(inputs)  
+            #outputs=net(inputs)  
+            raw_logits = net(inputs)
+            outputs = ArcMargin(raw_logits, labels)
                        
             _,valid_predicted=torch.max(outputs.data,1)
            
