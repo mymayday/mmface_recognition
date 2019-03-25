@@ -118,3 +118,49 @@ def train(epochs):
 
 train(200)
 torch.save(net.state_dict(),'3-25Mobilefacenet1.pkl')
+
+def test(epochs):
+    #载入测试集数据
+    test_dataset=HyperspectralDataset('test')
+    testloader=DataLoader(dataset=test_dataset,batch_size=batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
+    
+    #损失函数
+    criterion=nn.CrossEntropyLoss()
+        
+    net.eval()                                                          #在测试模型的时候使用
+
+    for epoch in range(epochs):
+        start= time.time()
+        test_loss = 0
+        test_correct=0
+        test_total=0
+
+        for i,(inputs,train_labels) in enumerate(testloader):                     
+            if use_gpu():
+                inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
+                inputs=inputs.contiguous()
+            else:
+                inputs,labels=Variable(inputs),Variable(train_labels) 
+
+            raw_logits = net(inputs)
+            outputs = ArcMargin(raw_logits, labels)
+
+            _,test_predicted=torch.max(outputs.data,1)
+            test_correct += int(torch.sum(test_predicted.eq(labels.data)))
+
+            loss =criterion(outputs,labels)
+            test_loss+=loss.item()
+            test_total+=int(test_labels.size(0))
+        
+        loss_test=test_loss/test_total
+        acc_test=100*test_correct/test_total
+        
+        time_elapsed = time.time() -start
+        print(' %d epoch  test  loss: %.3f  test_acc: %.3f   time:%.0fm %.0fs' %(epoch+1,loss_test,acc_test,time_elapsed // 60,time_elapsed % 60)) 
+
+        #画图
+        writer.add_scalars('mobilefacetestaccuracy', {'test': acc_test},  epoch)
+        writer.add_scalars('loss',  {'test': loss_test}, epoch) 
+
+test(200)
+
