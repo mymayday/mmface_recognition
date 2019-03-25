@@ -116,5 +116,5 @@ def train(epochs):
 #         torch.save(net,name)   
         
 
-train(100)
+train(200)
 torch.save(net.state_dict(),'3-25Mobilefacenet1.pkl')
