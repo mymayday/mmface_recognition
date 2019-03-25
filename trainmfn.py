@@ -22,7 +22,6 @@ use_gpu=torch.cuda.is_available
 
 if use_gpu():
    net.cuda()
-   ArcMargin = ArcMargin.cuda()
    #print('gpu is available')
 
 #初始化参数
