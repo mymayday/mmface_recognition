@@ -13,11 +13,11 @@ class HyperspectralDataset(Dataset):
         self.imgpath_list=[]
         
         if mode == "train":
-            f = open("/home/siminzhu/mmface_recognition/dataset/train.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/train.txt", "r")
         elif mode == "valid":
-            f = open("/home/siminzhu/mmface_recognition/dataset/valid.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/valid.txt", "r")
         else:
-            f = open("/home/siminzhu/mmface_recognition/dataset/test.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/test.txt", "r")
         contents=f.readlines()                                                #读取文档中的所有行
                 
         for line in contents:
