@@ -10,21 +10,21 @@ class Bottleneck(nn.Module):
     def __init__(self, inp, oup, stride, expansion):
         super(Bottleneck, self).__init__()
         self.connect = stride == 1 and inp == oup
-        #
+        
         self.conv = nn.Sequential(
-            #pw
+            #pointwise
             nn.Conv2d(inp, inp * expansion, 1, 1, 0, bias=False),
             nn.BatchNorm2d(inp * expansion),
             nn.PReLU(inp * expansion),
             # nn.ReLU(inplace=True),
 
-            #dw
+            #depthwise conv3x3
             nn.Conv2d(inp * expansion, inp * expansion, 3, stride, 1, groups=inp * expansion, bias=False),
             nn.BatchNorm2d(inp * expansion),
             nn.PReLU(inp * expansion),
             # nn.ReLU(inplace=True),
 
-            #pw-linear
+            #pointwise-linear
             nn.Conv2d(inp * expansion, oup, 1, 1, 0, bias=False),
             nn.BatchNorm2d(oup),
         )
@@ -47,11 +47,8 @@ class ConvBlock(nn.Module):
         if not linear:
             self.prelu = nn.PReLU(oup)
     def forward(self, x):
-        x=x.contiguous()
         x = self.conv(x)
-        x=x.contiguous()
         x = self.bn(x)
-        x=x.contiguous()
         if self.linear:
             return x
         else:
@@ -81,19 +78,23 @@ class MobileFacenet(nn.Module):
     def __init__(self, bottleneck_setting=Mobilefacenet_bottleneck_setting):
         super(MobileFacenet, self).__init__()
 
+        #第一层 standard convolution conv 3x3
         self.conv1 = ConvBlock(1, 64, 3, 2, 1)
-
+        #第二层 depthwise convolution 3x3
         self.dw_conv1 = ConvBlock(64, 64, 3, 1, 1, dw=True)
 
         self.inplanes = 64
         block = Bottleneck
         self.blocks = self._make_layer(block, bottleneck_setting)
-
+        #conv1x1
         self.conv2 = ConvBlock(128, 512, 1, 1, 0)
-
-        self.linear7 = ConvBlock(512, 512, (7, 6), 1, 0, dw=True, linear=True)
-
+        #linear GDConv
+        k_size = (MobileFacenet.get_input_res()[0] // 16, MobileFacenet.get_input_res()[1] // 16)
+        self.linear7 = ConvBlock(512, 512, k_size, 1, 0, dw=True, linear=True)
+        #linear Conv1x1
         self.linear1 = ConvBlock(512, 128, 1, 1, 0, linear=True)
+        #arcface 
+        self.arcface=ArcMarginProduct(128,33)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -116,18 +117,19 @@ class MobileFacenet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        x=x.contiguous()
         x = self.conv1(x)
         x = self.dw_conv1(x)
         x = self.blocks(x)
         x = self.conv2(x)
-        x=x.contiguous()
         x = self.linear7(x)
         x = self.linear1(x)
         x = x.contiguous().view(x.size(0), -1)
-
+        x=self.arcface(x)
         return x
-
+    
+    @staticmethod
+    def get_input_res():
+        return 64,64
 
 class ArcMarginProduct(nn.Module):
     def __init__(self, in_features=128, out_features=200, s=32.0, m=0.50, easy_margin=False):
