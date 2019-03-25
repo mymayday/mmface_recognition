@@ -93,9 +93,7 @@ class MobileFacenet(nn.Module):
         self.linear7 = ConvBlock(512, 512, k_size, 1, 0, dw=True, linear=True)
         #linear Conv1x1
         self.linear1 = ConvBlock(512, 128, 1, 1, 0, linear=True)
-        #arcface 
-        self.arcface=ArcMarginProduct(128,33)
-
+        
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
@@ -124,7 +122,7 @@ class MobileFacenet(nn.Module):
         x = self.linear7(x)
         x = self.linear1(x)
         x = x.contiguous().view(x.size(0), -1)
-        x=self.arcface(x)
+        
         return x
     
     @staticmethod
