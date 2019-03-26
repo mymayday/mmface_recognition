@@ -17,9 +17,9 @@ from tensorboardX import SummaryWriter
 import time
 
 net=MobileFacenet()
-writer=SummaryWriter('log')
+writer=SummaryWriter('log_mfn')
 use_gpu=torch.cuda.is_available
-ArcMargin = ArcMarginProduct(128,33)
+ArcMargin = ArcMarginProduct(128,40)
 
 if use_gpu():
    net.cuda()
@@ -33,7 +33,7 @@ lr=1e-4
 def train(epochs):
     #载入训练集数据
     train_dataset=HyperspectralDataset('train')
-    trainloader=DataLoader(dataset=train_dataset,batch_size=batchsize,shuffle=True,num_workers=4)     #num_worker多线程数目
+    trainloader=DataLoader(dataset=train_dataset,batch_size=batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
     
     #目标函数与优化器
     criterion=nn.CrossEntropyLoss()
@@ -117,7 +117,7 @@ def train(epochs):
         
 
 train(200)
-torch.save(net.state_dict(),'3-25Mobilefacenet1.pkl')
+torch.save(net.state_dict(),'3-26Mobilefacenet1.pkl')
 
 def test(epochs):
     #载入测试集数据
@@ -135,12 +135,11 @@ def test(epochs):
         test_correct=0
         test_total=0
 
-        for i,(inputs,train_labels) in enumerate(testloader):                     
+        for i,(inputs,test_labels) in enumerate(testloader):                     
             if use_gpu():
-                inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
-                inputs=inputs.contiguous()
+                inputs,labels=Variable(inputs.cuda()),Variable(test_labels.cuda())
             else:
-                inputs,labels=Variable(inputs),Variable(train_labels) 
+                inputs,labels=Variable(inputs),Variable(test_labels) 
 
             raw_logits = net(inputs)
             outputs = ArcMargin(raw_logits, labels)
