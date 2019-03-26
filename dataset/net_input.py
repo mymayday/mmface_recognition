@@ -85,7 +85,7 @@ class HyperspectralDataset(Dataset):
         else:
             f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/test.txt", "r")
         self.contents=f.readlines()                                                #读取文档中的所有行
-        self.facesize = tuple(facesize)
+        self.facesize = tuple((64,64))
         self.dicts = getDicts()
         
     def __getitem__(self, index):
