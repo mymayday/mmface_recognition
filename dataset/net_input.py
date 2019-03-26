@@ -5,6 +5,10 @@ from torchvision import transforms
 import cv2
 from torchvision.transforms import ToTensor
 
+notUsedSubjects = []
+get_vol = lambda i: (i-1)//10+1
+
+
 ##数据加载     基本原理:使用Dataset封装数据集,再使用Dataloader实现数据并行加载
 # class HyperspectralDataset(Dataset):
     
@@ -56,7 +60,7 @@ from torchvision.transforms import ToTensor
 def getDicts():
     dicts = dict()
     for vol in ["DATA%d" % _ for _ in range(1, 5)]:
-        txtfile = os.path.join(configer.datapath, vol, "detect.txt")
+        txtfile = os.path.join("/datasets/ECUST2019", vol, "detect.txt")
         with open(txtfile, 'r') as f:
             dicts[vol] = eval(f.read())
     return dicts    
