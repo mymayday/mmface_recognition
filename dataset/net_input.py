@@ -59,13 +59,13 @@ def getDicts():
         txtfile = os.path.join(configer.datapath, vol, "detect.txt")
         with open(txtfile, 'r') as f:
             dicts[vol] = eval(f.read())
-return dicts    
+    return dicts    
 
 def get_label_from_path(path):
     path_split = path.split('/')
     idx = path_split.index('ECUST2019')
     label = int(path_split[idx+2])
-return label
+    return label
 
 class HyperspectralDataset(Dataset):
     labels = [i for i in range(1, 41) if (i not in notUsedSubjects)]
