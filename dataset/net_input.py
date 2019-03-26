@@ -13,11 +13,11 @@ class HyperspectralDataset(Dataset):
         self.imgpath_list=[]
         
         if mode == "train":
-            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/train.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/train.txt", "r")
         elif mode == "valid":
-            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/valid.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/valid.txt", "r")
         else:
-            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/test.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/test.txt", "r")
         contents=f.readlines()                                                #读取文档中的所有行
                 
         for line in contents:
@@ -50,3 +50,43 @@ class HyperspectralDataset(Dataset):
     def __len__(self):
         '''返回数据集中所有图片的数目'''
         return len(self.imgpath_list)   
+
+# class HyperECUST(Dataset):
+#     labels = [i for i in range(1, 41) if (i not in notUsedSubjects)]
+
+#     def __init__(self, splitmode, facesize=None, mode='train'):
+#         """
+#         Params:
+#             facesize:   {tuple/list[H, W]}
+#             mode:       {str} 'train', 'valid'
+#         """
+#         with open('./split_23chs/{}/{}.txt'.format(splitmode, mode), 'r') as f:
+#             self.filenames = f.readlines()
+#         self.facesize = tuple(facesize)
+#         self.dicts = getDicts()
+
+#     def __getitem__(self, index):
+#         filename = self.filenames[index].strip()
+#         filename = os.path.join(configer.datapath, filename)
+#         label = get_label_from_path(filename)
+
+#         # get bbox
+#         vol = "DATA%d" % get_vol(label)
+#         imgname = filename[filename.find("DATA")+5:]
+#         dirname = '/'.join(imgname.split('/')[:-1])
+#         bbox = self.dicts[vol][dirname][1]
+#         [x1, y1, x2, y2] = bbox
+
+#         # load image array
+#         image = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)[y1: y2, x1: x2]
+#         if self.facesize is not None:
+#             image = cv2.resize(image, self.facesize[::-1])
+
+#         image = image[:, :, np.newaxis]
+#         image = ToTensor()(image)
+#         label = self.labels.index(label)
+#         return image, label
+    
+#     def __len__(self):
+#         return len(self.filenames)
+
