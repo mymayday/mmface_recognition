@@ -158,8 +158,8 @@ def test(epochs):
         print(' %d batch  test  loss: %.3f  test_acc: %.3f   time:%.0fm %.0fs' %(batch+1,loss_test,acc_test,time_elapsed // 60,time_elapsed % 60)) 
 
         #画图
-        writer.add_scalars('mobilefacetestaccuracy', {'test': acc_test},  epoch)
-        writer.add_scalars('loss',  {'test': loss_test}, epoch) 
+        writer.add_scalars('mobilefacetestaccuracy', {'test': acc_test},  batch)
+        writer.add_scalars('loss',  {'test': loss_test},  batch) 
 
 test(200)
 
