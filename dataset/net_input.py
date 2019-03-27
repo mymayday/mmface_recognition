@@ -104,9 +104,9 @@ class HyperspectralDataset(Dataset):
         # get bbox
         vol = "DATA%d" % get_vol(label)
         imgname = filename[filename.find("DATA")+5:]
-        print('imgname',imgname)
+        #print('imgname',imgname)
         dirname = '/'.join(imgname.split('/')[:-1])
-        print('dirname',dirname)
+        #print('dirname',dirname)
         bbox = self.dicts[vol][dirname][1]
         [x1, y1, x2, y2] = bbox
 
