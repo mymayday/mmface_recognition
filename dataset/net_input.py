@@ -4,7 +4,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import cv2
 from torchvision.transforms import ToTensor
-from config import configer
+from dataset.config import configer
 
 notUsedSubjects = []
 get_vol = lambda i: (i-1)//10+1
