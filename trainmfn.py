@@ -16,7 +16,7 @@ from torchvision import transforms
 from tensorboardX import SummaryWriter
 import time
 
-net=MobileFacenet()
+net=torch.load('3-26Mobilefacenet1.pkl ')
 writer=SummaryWriter('log_mfn0327')
 use_gpu=torch.cuda.is_available
 ArcMargin = ArcMarginProduct(128,40)
