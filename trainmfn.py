@@ -87,6 +87,7 @@ def train(epochs):
                 inputs,labels=Variable(validinputs.cuda()),Variable(valid_labels.cuda())
             else:
                 inputs,labels=Variable(validinputs),Variable(valid_labels) 
+            
             #inputs,labels=Variable(validinputs.float()),Variable(valid_labels)
             #outputs=net(inputs)  
             raw_logits = net(inputs)
@@ -129,33 +130,32 @@ def test(epochs):
         
     net.eval()                                                          #在测试模型的时候使用
 
-    for epoch in range(epochs):
+    for i,(inputs,test_labels) in enumerate(testloader):   
+        batch=i
         start= time.time()
         test_loss = 0
         test_correct=0
         test_total=0
+        if use_gpu():
+            inputs,labels=Variable(inputs.cuda()),Variable(test_labels.cuda())
+        else:
+            inputs,labels=Variable(inputs),Variable(test_labels) 
 
-        for i,(inputs,test_labels) in enumerate(testloader):                     
-            if use_gpu():
-                inputs,labels=Variable(inputs.cuda()),Variable(test_labels.cuda())
-            else:
-                inputs,labels=Variable(inputs),Variable(test_labels) 
+        raw_logits = net(inputs)
+        outputs = ArcMargin(raw_logits, labels)
 
-            raw_logits = net(inputs)
-            outputs = ArcMargin(raw_logits, labels)
+        _,test_predicted=torch.max(outputs.data,1)
+        test_correct = int(torch.sum(test_predicted.eq(labels.data)))
 
-            _,test_predicted=torch.max(outputs.data,1)
-            test_correct += int(torch.sum(test_predicted.eq(labels.data)))
-
-            loss =criterion(outputs,labels)
-            test_loss+=loss.item()
-            test_total+=int(test_labels.size(0))
+        loss =criterion(outputs,labels)
+        test_loss=loss.item()
+        test_total=int(test_labels.size(0))
         
         loss_test=test_loss/test_total
         acc_test=100*test_correct/test_total
         
         time_elapsed = time.time() -start
-        print(' %d epoch  test  loss: %.3f  test_acc: %.3f   time:%.0fm %.0fs' %(epoch+1,loss_test,acc_test,time_elapsed // 60,time_elapsed % 60)) 
+        print(' %d batch  test  loss: %.3f  test_acc: %.3f   time:%.0fm %.0fs' %(batch+1,loss_test,acc_test,time_elapsed // 60,time_elapsed % 60)) 
 
         #画图
         writer.add_scalars('mobilefacetestaccuracy', {'test': acc_test},  epoch)
