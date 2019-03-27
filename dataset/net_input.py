@@ -14,7 +14,7 @@ get_vol = lambda i: (i-1)//10+1
     
 #     def __init__(self,mode,transforms=None):
 #         '''目标:根据.txt文件获取所有图片的地址 '''
-        
+       
         
 #         self.imgpath_list=[]
         
@@ -84,6 +84,13 @@ class HyperspectralDataset(Dataset):
             f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/valid.txt", "r")
         else:
             f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/test.txt", "r")
+            
+#         if mode == "train":
+#             f = open("/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/train.txt", "r")
+#         elif mode == "valid":
+#             f = open("/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/valid.txt", "r")
+#         else:
+#             f = open("/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/test.txt", "r")
         self.contents=f.readlines()                                                #读取文档中的所有行
         self.facesize = tuple((64,64))
         self.dicts = getDicts()
@@ -91,12 +98,15 @@ class HyperspectralDataset(Dataset):
     def __getitem__(self, index):
         filename = self.contents[index].strip()
         filename = os.path.join("/datasets/ECUST2019", filename)
+        #filename = os.path.join("/datasets/ECUST2019_NPY", filename)
         label = get_label_from_path(filename)
 
         # get bbox
         vol = "DATA%d" % get_vol(label)
         imgname = filename[filename.find("DATA")+5:]
+        print('imgname',imgname)
         dirname = '/'.join(imgname.split('/')[:-1])
+        print('dirname',dirname)
         bbox = self.dicts[vol][dirname][1]
         [x1, y1, x2, y2] = bbox
 
