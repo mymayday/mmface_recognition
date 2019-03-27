@@ -118,7 +118,7 @@ def train(epochs):
         
 
 train(200)
-torch.save(net.state_dict(),'3-27Mobilefacenet1.pkl')
+torch.save(net.state_dict(),'3-27Mobilefacenet2.pkl')
 
 def test(epochs):
     #载入测试集数据
