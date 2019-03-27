@@ -60,7 +60,7 @@ get_vol = lambda i: (i-1)//10+1
 def getDicts():
     dicts = dict()
     for vol in ["DATA%d" % _ for _ in range(1, 5)]:
-        txtfile = os.path.join("/datasets/ECUST2019", vol, "detect.txt")
+        txtfile = os.path.join(configer.datasetpath, vol, "detect.txt")
         with open(txtfile, 'r') as f:
             dicts[vol] = eval(f.read())
     return dicts    
@@ -97,7 +97,7 @@ class HyperspectralDataset(Dataset):
         
     def __getitem__(self, index):
         filename = self.contents[index].strip()
-        filename = os.path.join("/datasets/ECUST2019", filename)
+        filename = os.path.join(configer.datasetpath, filename)
         #filename = os.path.join("/datasets/ECUST2019_NPY", filename)
         label = get_label_from_path(filename)
 
