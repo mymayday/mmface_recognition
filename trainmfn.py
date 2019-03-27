@@ -16,7 +16,8 @@ from torchvision import transforms
 from tensorboardX import SummaryWriter
 import time
 
-net=torch.load_state_dict('/home/siminzhu/mmface_recognition/3-27Mobilefacenet1.pkl ')
+net=MobileFacenet()
+net.load_state_dict(torch.load('3-27Mobilefacenet1.pkl'))
 writer=SummaryWriter('log_mfn0327')
 use_gpu=torch.cuda.is_available
 ArcMargin = ArcMarginProduct(128,40)
