@@ -141,8 +141,8 @@ class HyperspectralDataset(Dataset):
         contents=f.readlines()                                                #读取文档中的所有行
                 
         for line in contents:           
-                   
-            newpath=line.replace(line,configer.datasetpath+'/'+line+'.npy')
+            xs=line.rstrip('\n')       
+            newpath=xs.replace(xs,configer.datasetpath+'/'+line+'.npy')
             #print(newpath)
             self.imgpath_list.append(newpath)
             
