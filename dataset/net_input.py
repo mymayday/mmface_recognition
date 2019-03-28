@@ -160,15 +160,11 @@ class HyperspectralDataset(Dataset):
         data=data_transform(data)                                   #对加载的图像做归一化处理
         data=data.contiguous()
         label=int(self.imgpath_list[index].split('/',-1)[3])-1
-        #print(data.size())
+        print(data.size())
         print(data,label)
         return data,label
     
     def __len__(self):
         '''返回数据集中所有图片的数目'''
         return len(self.imgpath_list)   
-
-
-
-
 

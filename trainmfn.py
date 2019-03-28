@@ -17,8 +17,8 @@ from tensorboardX import SummaryWriter
 import time
 
 net=MobileFacenet()
-net.load_state_dict(torch.load('3-27Mobilefacenet_v4.pkl'))
-writer=SummaryWriter('log_mfn0328_v1')
+#net.load_state_dict(torch.load('3-27Mobilefacenet_v4.pkl'))
+writer=SummaryWriter('log_mfn0328_46channel')
 use_gpu=torch.cuda.is_available
 ArcMargin = ArcMarginProduct(128,40)
 
@@ -119,7 +119,7 @@ def train(epochs):
         
 
 train(200)
-torch.save(net.state_dict(),'3-28Mobilefacenet_v1.pkl')
+torch.save(net.state_dict(),'3-28Mobilefacenet_46channelv1.pkl')
 
 def test(epochs):
     #载入测试集数据
