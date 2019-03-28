@@ -152,6 +152,8 @@ class HyperspectralDataset(Dataset):
         '''返回一张图片的数据'''
         
         img=np.load(self.imgpath_list[index])
+        print(img)
+        print(img.shape)
         data=np.resize(img,(64,64)).reshape((64,64,46))
         data_transform=transforms.Compose([
             transforms.ToTensor(),
