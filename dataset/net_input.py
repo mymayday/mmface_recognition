@@ -10,7 +10,7 @@ notUsedSubjects = []
 get_vol = lambda i: (i-1)//10+1
 
 
-##数据加载     基本原理:使用Dataset封装数据集,再使用Dataloader实现数据并行加载
+# #数据加载     基本原理:使用Dataset封装数据集,再使用Dataloader实现数据并行加载
 # class HyperspectralDataset(Dataset):
     
 #     def __init__(self,mode,transforms=None):
@@ -19,12 +19,19 @@ get_vol = lambda i: (i-1)//10+1
         
 #         self.imgpath_list=[]
         
+#         # if mode == "train":
+#         #     f = open("/home/siminzhu/mmface_recognition/dataset/train.txt", "r")
+#         # elif mode == "valid":
+#         #     f = open("/home/siminzhu/mmface_recognition/dataset/valid.txt", "r")
+#         # else:
+#         #     f = open("/home/siminzhu/mmface_recognition/dataset/test.txt", "r")
+        
 #         if mode == "train":
-#             f = open("/home/siminzhu/mmface_recognition/dataset/train.txt", "r")
+#             f = open("/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/train.txt", "r")
 #         elif mode == "valid":
-#             f = open("/home/siminzhu/mmface_recognition/dataset/valid.txt", "r")
+#             f = open("/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/valid.txt", "r")
 #         else:
-#             f = open("/home/siminzhu/mmface_recognition/dataset/test.txt", "r")
+#             f = open("/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/test.txt", "r")
 #         contents=f.readlines()                                                #读取文档中的所有行
                 
 #         for line in contents:
@@ -80,18 +87,13 @@ class HyperspectralDataset(Dataset):
         self.imgpath_list=[]
         
         if mode == "train":
-            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/train.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split2/train.txt", "r")
         elif mode == "valid":
-            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/valid.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split2/valid.txt", "r")
         else:
-            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split1/test.txt", "r")
+            f = open("/home/siminzhu/mmface_recognition/dataset/new split(相邻波段问题)/split2/test.txt", "r")
             
-#         if mode == "train":
-#             f = open("/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/train.txt", "r")
-#         elif mode == "valid":
-#             f = open("/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/valid.txt", "r")
-#         else:
-#             f = open("/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/test.txt", "r")
+
         self.contents=f.readlines()                                                #读取文档中的所有行
         self.facesize = tuple((64,64))
         self.dicts = getDicts()
