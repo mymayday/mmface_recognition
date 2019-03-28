@@ -157,9 +157,8 @@ class HyperspectralDataset(Dataset):
         for i in range(c):
             single=img[:,:,i]
             newdata=np.resize(img,(64,64))
-            print(newdata)
             data.append(newdata)
-        data=np.reshape((64,64,46))
+        
         print(data.shape)
         data_transform=transforms.Compose([
             transforms.ToTensor(),
