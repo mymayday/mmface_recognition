@@ -28,7 +28,7 @@ if use_gpu():
    #print('gpu is available')
 
 #初始化参数
-batchsize=64                       #批处理大小
+batchsize=20                       #批处理大小
 lr=1e-4
 
 
