@@ -155,7 +155,7 @@ class HyperspectralDataset(Dataset):
         h,w,c=img.shape
         data=np.zeros(shape=(64, 64, c), dtype='uint8')
         for i in range(c):
-            single = cv2.imread(img[:,:,i],cv2.IMREAD_GRAYSCALE)
+            single=img[:,:,i]
             newdata=np.resize(single,(64,64))
             data[:, :, i] = newdata 
         print(data.shape)
