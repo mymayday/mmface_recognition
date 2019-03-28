@@ -83,7 +83,6 @@ class MobileFacenet(nn.Module):
         self.conv1 = ConvBlock(configer.n_channels, 64, 3, 2, 1)
         #第二层 depthwise convolution 3x3
         self.dw_conv1 = ConvBlock(64, 64, 3, 1, 1, dw=True)
-
         self.inplanes = 64
         block = Bottleneck
         self.blocks = self._make_layer(block, bottleneck_setting)
