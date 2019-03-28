@@ -159,7 +159,6 @@ class HyperspectralDataset(Dataset):
             newdata=np.resize(img,(64,64))
             print(newdata)
             data.append(newdata)
-        print(data.size)
         data=np.reshape((64,64,46))
         print(data.shape)
         data_transform=transforms.Compose([
