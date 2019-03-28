@@ -1,4 +1,5 @@
 # mmface_recognition
 
-using MobileNetV1
-      MobilefaceNet
+- MobileNetV1
+
+- MobilefaceNet
