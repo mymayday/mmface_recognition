@@ -48,15 +48,15 @@ def train(epochs):
         train_total=0
         since = time.time()
         net.train()
-        for i,(inputs,train_labels,channel) in enumerate(trainloader):                     
+        for i,(inputs,train_labels) in enumerate(trainloader):                     
             if use_gpu():
-                inputs,labels,channel=Variable(inputs.cuda()),Variable(train_labels.cuda()),Variable(channel.cuda())
+                inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
                 
             else:
-                inputs,labels,channel=Variable(inputs),Variable(train_labels), Variable(channel)
+                inputs,labels=Variable(inputs),Variable(train_labels)
             optimizer.zero_grad()
             #outputs=net(inputs)                                                   #网络输出
-            raw_logits = net(inputs,channel)
+            raw_logits = net(inputs)
             outputs = ArcMargin(raw_logits, labels)
             _,train_predicted=torch.max(outputs.data,1)
             

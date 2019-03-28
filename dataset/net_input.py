@@ -150,11 +150,14 @@ class HyperspectralDataset(Dataset):
             
     def __getitem__(self,index):
         '''返回一张图片的数据'''
-        
         img=np.load(self.imgpath_list[index])                #图片读进来(h,w,c)     照片尺寸hxw,通道数c
         h,w,c=img.shape
-        data=np.zeros(shape=(64, 64, c), dtype='uint8')
-        for i in range(c):
+        if c=46:
+            img=img[:,:,::2]
+        else:
+            pass
+        data=np.zeros(shape=(64, 64, 23), dtype='uint8')
+        for i in range(23):
             single=img[:,:,i]
             newdata=np.resize(single,(64,64))
             data[:, :, i] = newdata 
@@ -167,7 +170,7 @@ class HyperspectralDataset(Dataset):
         label=int(self.imgpath_list[index].split('/',-1)[4])-1
         # print(data.size())
         # print(data,label)
-        return data,label,c
+        return data,label
     
     def __len__(self):
         '''返回数据集中所有图片的数目'''

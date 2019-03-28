@@ -13,7 +13,7 @@ configer.testtxtpath="/home/siminzhu/mmface_recognition/dataset/new split(46é€šé
 
 
 configer.facesize       = (64, 64)
-configer.n_channels     = 46
+configer.n_channels     = 23
 configer.n_classes      = 40
 configer.usedChannels   =[550]
 
