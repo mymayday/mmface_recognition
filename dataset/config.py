@@ -16,6 +16,6 @@ configer.modelname = "MobilefaceNet"
 
 configer.learningrate  = 1e-4
 configer.batchsize     = 64
-configer.n_epoch       = 300
+configer.n_epoch       = 200
 
 configer.cuda = is_available()
