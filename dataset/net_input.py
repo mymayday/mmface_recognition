@@ -153,12 +153,11 @@ class HyperspectralDataset(Dataset):
         
         img=np.load(self.imgpath_list[index])                #图片读进来(h,w,c)     照片尺寸hxw,通道数c
         h,w,c=img.shape
-        data=np.zeros((64,64,46))
+        data=np.zeros(shape=(64, 64, c), dtype='uint8')
         for i in range(c):
-            single=img[:,:,i]
-            newdata=np.resize(img,(64,64))
-            data[i]=newdata
-        
+            single = cv2.imread(img[:,:,i]), cv2.IMREAD_GRAYSCALE)
+            newdata=np.resize(single,(64,64))
+            data[:, :, i] = newdata 
         print(data.shape)
         data_transform=transforms.Compose([
             transforms.ToTensor(),
