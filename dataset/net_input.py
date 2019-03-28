@@ -143,7 +143,7 @@ class HyperspectralDataset(Dataset):
         for line in contents:           
                    
             newpath=line.replace(line,configer.datasetpath+'/'+line+'.npy')
-            print(newpath)
+            #print(newpath)
             self.imgpath_list.append(newpath)
             
         f.close()
