@@ -152,7 +152,7 @@ class HyperspectralDataset(Dataset):
         '''返回一张图片的数据'''
         
         img=np.load(self.imgpath_list[index])
-        c = len(img)
+        h,w,c=img.shape
         print(c)
         # for i in range(c):
 
