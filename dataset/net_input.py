@@ -153,12 +153,12 @@ class HyperspectralDataset(Dataset):
         
         img=np.load(self.imgpath_list[index])                #图片读进来(h,w,c)     照片尺寸hxw,通道数c
         h,w,c=img.shape
-        data=[]
+        data=np.zeros((64,64,46))
         for i in range(c):
             single=img[:,:,i]
             newdata=np.resize(img,(64,64))
-            data.append(newdata)
-        data=np.array(data)
+            data[i]=newdata
+        
         print(data.shape)
         data_transform=transforms.Compose([
             transforms.ToTensor(),
@@ -166,8 +166,8 @@ class HyperspectralDataset(Dataset):
         )                                                 
         data=data_transform(data)                                   #对加载的图像做归一化
         label=int(self.imgpath_list[index].split('/',-1)[4])-1
-        print(data.size())
-        print(data,label)
+        # print(data.size())
+        # print(data,label)
         return data,label
     
     def __len__(self):
