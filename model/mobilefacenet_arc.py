@@ -78,9 +78,9 @@ Mobilenetv2_bottleneck_setting = [
 class MobileFacenet(nn.Module):
     def __init__(self, bottleneck_setting=Mobilefacenet_bottleneck_setting):
         super(MobileFacenet, self).__init__()
-
+        
         #第一层 standard convolution conv 3x3
-        self.conv1 = ConvBlock(configer.n_channels, 64, 3, 2, 1)
+        #self.conv1 = ConvBlock(configer.n_channels, 64, 3, 2, 1)
         #第二层 depthwise convolution 3x3
         self.dw_conv1 = ConvBlock(64, 64, 3, 1, 1, dw=True)
 
@@ -115,8 +115,9 @@ class MobileFacenet(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def forward(self, x):
-        x = self.conv1(x)
+    def forward(self, x,channel):
+        #x = self.conv1(x)
+        x=ConvBlock(channel, 64, 3, 2, 1)
         x = self.dw_conv1(x)
         x = self.blocks(x)
         x = self.conv2(x)

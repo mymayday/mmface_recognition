@@ -158,7 +158,7 @@ class HyperspectralDataset(Dataset):
             single=img[:,:,i]
             newdata=np.resize(single,(64,64))
             data[:, :, i] = newdata 
-        print(data.shape)
+        #print(data.shape)
         data_transform=transforms.Compose([
             transforms.ToTensor(),
         ]
@@ -167,7 +167,7 @@ class HyperspectralDataset(Dataset):
         label=int(self.imgpath_list[index].split('/',-1)[4])-1
         # print(data.size())
         # print(data,label)
-        return data,label
+        return data,label,c
     
     def __len__(self):
         '''返回数据集中所有图片的数目'''

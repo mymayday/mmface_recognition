@@ -31,6 +31,7 @@ if use_gpu():
 batchsize=64                       #批处理大小
 lr=1e-4
 
+
 def train(epochs):
     #载入训练集数据
     train_dataset=HyperspectralDataset('train')
@@ -47,15 +48,15 @@ def train(epochs):
         train_total=0
         since = time.time()
         net.train()
-        for i,(inputs,train_labels) in enumerate(trainloader):                     
+        for i,(inputs,train_labels,channel) in enumerate(trainloader):                     
             if use_gpu():
-                inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
-                inputs=inputs.contiguous()
+                inputs,labels,channel=Variable(inputs.cuda()),Variable(train_labels.cuda()),Variable(channel.cuda())
+                
             else:
-                inputs,labels=Variable(inputs),Variable(train_labels) 
+                inputs,labels,channel=Variable(inputs),Variable(train_labels), Variable(channel)
             optimizer.zero_grad()
             #outputs=net(inputs)                                                   #网络输出
-            raw_logits = net(inputs)
+            raw_logits = net(inputs,channel)
             outputs = ArcMargin(raw_logits, labels)
             _,train_predicted=torch.max(outputs.data,1)
             
