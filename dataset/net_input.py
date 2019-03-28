@@ -152,7 +152,7 @@ class HyperspectralDataset(Dataset):
         '''返回一张图片的数据'''
         img=np.load(self.imgpath_list[index])                #图片读进来(h,w,c)     照片尺寸hxw,通道数c
         h,w,c=img.shape
-        if c=46:
+        if c==46:
             img=img[:,:,::2]
         else:
             pass
