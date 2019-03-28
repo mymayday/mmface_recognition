@@ -159,13 +159,14 @@ class HyperspectralDataset(Dataset):
             newdata=np.resize(img,(64,64))
             print(newdata)
             data.append(newdata)
+        print(data.size)
+        data=np.reshape((64,64,46))
         print(data.shape)
         data_transform=transforms.Compose([
             transforms.ToTensor(),
         ]
         )                                                 
-        data=data_transform(data)                                   #对加载的图像做归一化处理
-        data=data.contiguous()
+        data=data_transform(data)                                   #对加载的图像做归一化
         label=int(self.imgpath_list[index].split('/',-1)[3])-1
         print(data.size())
         print(data,label)
