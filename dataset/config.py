@@ -10,6 +10,7 @@ configer.datasetpath="/datasets/ECUST2019"
 configer.facesize       = (64, 64)
 configer.n_channels     = 46
 configer.n_classes      = 40
+configer.usedChannels   =[550]
 
 configer.modelname = "MobilefaceNet"
 
