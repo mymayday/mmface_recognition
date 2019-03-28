@@ -3,9 +3,14 @@ from easydict import EasyDict                 #Access dict values as attributes 
 
 configer = EasyDict()
 
-configer.datasetpath="/datasets/ECUST2019"
+#configer.datasetpath="/datasets/ECUST2019"
+configer.datasetpath="/datasets/ECUST2019_NPY"
+configer.traintxtpath="/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/train.txt"
+configer.validtxtpath="/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/valid.txt"
+configer.testtxtpath="/home/siminzhu/mmface_recognition/dataset/new split(46通道输入)/split/test.txt"
 # configer.logspath   =
 # configer.modelspath =
+
 
 configer.facesize       = (64, 64)
 configer.n_channels     = 46

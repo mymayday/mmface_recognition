@@ -5,6 +5,7 @@ from torch.autograd import Variable
 
 import math
 from torch.nn import Parameter
+from dataset.config import configer
 
 class Bottleneck(nn.Module):
     def __init__(self, inp, oup, stride, expansion):
@@ -79,7 +80,7 @@ class MobileFacenet(nn.Module):
         super(MobileFacenet, self).__init__()
 
         #第一层 standard convolution conv 3x3
-        self.conv1 = ConvBlock(1, 64, 3, 2, 1)
+        self.conv1 = ConvBlock(configer.n_channels, 64, 3, 2, 1)
         #第二层 depthwise convolution 3x3
         self.dw_conv1 = ConvBlock(64, 64, 3, 1, 1, dw=True)
 
