@@ -34,8 +34,8 @@ def train(epochs):
         train_dataset = HyperspectralDataset('train')
         valid_dataset = HyperspectralDataset('valid')
     elif configer.trainmode == 'RGB':
-        train_dataset = RGBECUST('train')
-        valid_dataset = RGBECUST('valid')
+        train_dataset = RGBDataset('train')
+        valid_dataset = RGBDataset('valid')
     trainloader=DataLoader(dataset=train_dataset,batch_size=configer.batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
     
     #目标函数与优化器
