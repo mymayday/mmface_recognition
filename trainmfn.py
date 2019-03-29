@@ -15,6 +15,7 @@ from dataset.net_input import HyperspectralDataset
 from torchvision import transforms
 from tensorboardX import SummaryWriter
 import time
+from dataset.config import configer
 
 net=MobileFacenet()
 net.load_state_dict(torch.load('3-28Mobilefacenet_v1.pkl'))
@@ -27,19 +28,14 @@ if use_gpu():
    ArcMargin = ArcMargin.cuda()
    #print('gpu is available')
 
-#初始化参数
-batchsize=30                      #批处理大小
-lr=1e-4
-
-
 def train(epochs):
     #载入训练集数据
     train_dataset=HyperspectralDataset('train')
-    trainloader=DataLoader(dataset=train_dataset,batch_size=batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
+    trainloader=DataLoader(dataset=train_dataset,batch_size=configer.batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
     
     #目标函数与优化器
     criterion=nn.CrossEntropyLoss()
-    optimizer=optim.Adam(net.parameters(),lr=lr)
+    optimizer=optim.Adam(net.parameters(),lr=configer.learningrate)
         
     #开始训练    
     for epoch in range(epochs):
