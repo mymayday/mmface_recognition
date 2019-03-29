@@ -12,6 +12,7 @@ from model.mobilenet import MobileNet
 from torch.autograd import Variable
 import torch.optim as optim
 from dataset.net_input import HyperspectralDataset
+from dataset.net_input import RGBDataset
 from torchvision import transforms
 from tensorboardX import SummaryWriter
 import time
