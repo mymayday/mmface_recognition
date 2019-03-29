@@ -18,8 +18,8 @@ import time
 from dataset.config import configer
 
 net=MobileFacenet()
-net.load_state_dict(torch.load('3-28Mobilefacenet_v1.pkl'))
-writer=SummaryWriter('log_mfn0329_46channel')
+#net.load_state_dict(torch.load('3-28Mobilefacenet_v1.pkl'))
+writer=SummaryWriter('log_mfn0329_RGB')
 use_gpu=torch.cuda.is_available
 ArcMargin = ArcMarginProduct(128,40)
 
@@ -30,7 +30,12 @@ if use_gpu():
 
 def train(epochs):
     #载入训练集数据
-    train_dataset=HyperspectralDataset('train')
+    if configer.trainmode == 'Multi':
+        train_dataset = HyperspectralDataset('train')
+        valid_dataset = HyperspectralDataset('valid')
+    elif configer.trainmode == 'RGB':
+        train_dataset = RGBECUST('train')
+        valid_dataset = RGBECUST('valid')
     trainloader=DataLoader(dataset=train_dataset,batch_size=configer.batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
     
     #目标函数与优化器
@@ -46,8 +51,7 @@ def train(epochs):
         net.train()
         for i,(inputs,train_labels) in enumerate(trainloader):                     
             if use_gpu():
-                inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())
-                
+                inputs,labels=Variable(inputs.cuda()),Variable(train_labels.cuda())     
             else:
                 inputs,labels=Variable(inputs),Variable(train_labels)
             optimizer.zero_grad()
@@ -55,11 +59,8 @@ def train(epochs):
             raw_logits = net(inputs)
             outputs = ArcMargin(raw_logits, labels)
             _,train_predicted=torch.max(outputs.data,1)
-            
             train_correct += int(torch.sum(train_predicted.eq(labels.data)))
-            
             loss =criterion(outputs,labels)
-           
             loss.backward()
             optimizer.step()
             running_loss+=loss.item()
@@ -69,7 +70,6 @@ def train(epochs):
         acc_train=100*train_correct/train_total
          
         #载入校验集数据
-        valid_dataset=HyperspectralDataset('valid')
         validloader=DataLoader(dataset=valid_dataset,batch_size=batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
         #目标函数与优化器
         criterion=nn.CrossEntropyLoss()
@@ -86,7 +86,6 @@ def train(epochs):
             else:
                 inputs,labels=Variable(validinputs),Variable(valid_labels) 
             
-            #inputs,labels=Variable(validinputs.float()),Variable(valid_labels)
             #outputs=net(inputs)  
             raw_logits = net(inputs)
             outputs = ArcMargin(raw_logits, labels)
@@ -116,12 +115,16 @@ def train(epochs):
         
 
 train(200)
-torch.save(net.state_dict(),'3-29Mobilefacenet_46channelv1.pkl')
+torch.save(net.state_dict(),'3-29Mobilefacenet_RGBv1.pkl')
 
 def test(epochs):
     #载入测试集数据
-    test_dataset=HyperspectralDataset('test')
-    testloader=DataLoader(dataset=test_dataset,batch_size=batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
+    if configer.trainmode == 'Multi':
+        test_dataset=HyperspectralDataset('test')
+    elif configer.trainmode == 'RGB':
+        test_dataset=RGBDataset('test')
+
+    testloader=DataLoader(dataset=test_dataset,batch_size=configer.batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
     
     #损失函数
     criterion=nn.CrossEntropyLoss()
