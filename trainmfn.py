@@ -20,9 +20,9 @@ from dataset.config import configer
 
 net=MobileFacenet()
 #net.load_state_dict(torch.load('3-28Mobilefacenet_v1.pkl'))
-writer=SummaryWriter('log_mfn0329_RGB')
+writer=SummaryWriter('log_mfn0401_RGB')
 use_gpu=torch.cuda.is_available
-ArcMargin = ArcMarginProduct(128,40)
+ArcMargin = ArcMarginProduct(128,63)
 
 if use_gpu():
    net.cuda()
@@ -116,7 +116,7 @@ def train(epochs):
         
 
 train(200)
-torch.save(net.state_dict(),'3-29Mobilefacenet_RGBv1.pkl')
+torch.save(net.state_dict(),'4-1Mobilefacenet_RGBv1.pkl')
 
 def test(epochs):
     #载入测试集数据
