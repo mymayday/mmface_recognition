@@ -239,7 +239,7 @@ class RGBDataset(Dataset):
             f = open(configer.testtxtpath, "r")            
 
         self.contents = f.readlines()                                                       #读取文档中的所有行
-        self.contents = [os.path.join(configer.datapath, filename).strip() + '.JPG'\
+        self.contents = [os.path.join(configer.datasetpath, filename).strip() + '.JPG'\
                                                     for filename in  self.contents]
         self.facesize = tuple(configer.facesize)
         self.dicts = getDicts()

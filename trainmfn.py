@@ -22,7 +22,7 @@ net=MobileFacenet()
 #net.load_state_dict(torch.load('3-28Mobilefacenet_v1.pkl'))
 writer=SummaryWriter('log_mfn0401_RGB')
 use_gpu=torch.cuda.is_available
-ArcMargin = ArcMarginProduct(128,63)
+ArcMargin = ArcMarginProduct(128,configer.n_classes)
 
 if use_gpu():
    net.cuda()
