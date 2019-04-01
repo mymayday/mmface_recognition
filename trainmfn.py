@@ -71,7 +71,7 @@ def train(epochs):
         acc_train=100*train_correct/train_total
          
         #载入校验集数据
-        validloader=DataLoader(dataset=valid_dataset,batch_size=batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
+        validloader=DataLoader(dataset=valid_dataset,batch_size=configer.batchsize,shuffle=True,num_workers=8)     #num_worker多线程数目
         #目标函数与优化器
         criterion=nn.CrossEntropyLoss()
         
