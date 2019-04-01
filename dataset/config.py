@@ -19,8 +19,8 @@ if configer.trainmode == 'Multi':
     # configer.modelname = "{}_{}_{}chs_{}sta_20nm".\
     #             format(configer.modelbase, configer.splitmode, configer.n_usedChannels, configer.usedChannels[0])
 elif configer.trainmode == 'RGB':
-    configer.usedRGBChannels = 'R'
-    configer.n_usedChannels = 1
+    configer.usedRGBChannels = 'RGB'
+    configer.n_usedChannels = 3
     # configer.modelname = '{}_{}_{}'.\
     #             format(configer.modelbase, configer.splitmode, configer.usedRGBChannels)
 
