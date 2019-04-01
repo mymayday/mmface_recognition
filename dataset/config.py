@@ -16,13 +16,13 @@ configer.n_classes      = 63
 if configer.trainmode == 'Multi':
     configer.usedChannels    = [550]
     configer.n_usedChannels = len(configer.usedChannels)
-    configer.modelname = "{}_{}_{}chs_{}sta_20nm".\
-                format(configer.modelbase, configer.splitmode, configer.n_usedChannels, configer.usedChannels[0])
+    # configer.modelname = "{}_{}_{}chs_{}sta_20nm".\
+    #             format(configer.modelbase, configer.splitmode, configer.n_usedChannels, configer.usedChannels[0])
 elif configer.trainmode == 'RGB':
     configer.usedRGBChannels = 'R'
     configer.n_usedChannels = 1
-    configer.modelname = '{}_{}_{}'.\
-                format(configer.modelbase, configer.splitmode, configer.usedRGBChannels)
+    # configer.modelname = '{}_{}_{}'.\
+    #             format(configer.modelbase, configer.splitmode, configer.usedRGBChannels)
 
 configer.modelname = "MobilefaceNet"
 
