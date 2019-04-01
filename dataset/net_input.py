@@ -276,7 +276,7 @@ class RGBDataset(Dataset):
                 image = b
 
         image = ToTensor()(image)
-        print(image.shape)
+        #print(image.shape)
         # get label
         label = self.labels.index(label)
         
