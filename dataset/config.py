@@ -27,7 +27,7 @@ elif configer.trainmode == 'RGB':
 configer.modelname = "MobilefaceNet"
 
 configer.learningrate  = 1e-4
-configer.batchsize     = 64
+configer.batchsize     = 50
 configer.n_epoch       = 200
 
 configer.cuda = is_available()

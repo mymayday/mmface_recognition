@@ -47,7 +47,7 @@ class ConvBlock(nn.Module):
         self.bn = nn.BatchNorm2d(oup)
         if not linear:
             self.prelu = nn.PReLU(oup)
-    def forward(self, x):
+    def forward(self, x):    
         x = self.conv(x)
         x = self.bn(x)
         if self.linear:
