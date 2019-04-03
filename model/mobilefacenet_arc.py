@@ -31,6 +31,7 @@ class Bottleneck(nn.Module):
         )
 
     def forward(self, x):
+        #Bottleneck的Block中步长为1时采用shortcut,步长为2时则不采用
         if self.connect:
             return x + self.conv(x)
         else:
@@ -105,9 +106,10 @@ class MobileFacenet(nn.Module):
     def _make_layer(self, block, setting):
         layers = []
         for t, c, n, s in setting:
+            #Bottleneck的第一个Block的步长为表中设置的步长,从第二个Block开始的步长都为1
             for i in range(n):
                 if i == 0:
-                    layers.append(block(self.inplanes, c, s, t))
+                    layers.append(block(self.inplanes, c, s, t))            
                 else:
                     layers.append(block(self.inplanes, c, 1, t))
                 self.inplanes = c
